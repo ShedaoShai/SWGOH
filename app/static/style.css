@@ -54,21 +54,18 @@ button.gefahr { color: var(--schlecht); }
 button:disabled { opacity: .5; cursor: default; }
 input, textarea { border: 1px solid var(--linie); background: var(--karte); border-radius: 3px; padding: 6px 8px; outline-color: var(--moos); }
 
-.kopf { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding: 10px 16px;
-        background: var(--kopf-bg); color: var(--kopf-text); border-bottom: 2px solid var(--signal); position: sticky; top: 0; z-index: 5; }
+.kopf { padding: 10px 16px; background: var(--kopf-bg); color: var(--kopf-text); border-bottom: 2px solid var(--signal);
+        position: sticky; top: 0; z-index: 5; }
+/* Inhalt der Kopfleiste als Gruppe in der Mitte, nicht über die ganze Bildschirmbreite verteilt */
+.kopf-innen { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 28px; max-width: 1280px; margin: 0 auto; }
 .marke { font: 700 22px/1 var(--titel); letter-spacing: .6px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
 .marke::before { content: "M"; display: grid; place-items: center; width: 30px; aspect-ratio: 1; border: 1px solid var(--signal); color: var(--signal); font-size: 19px; }
-/* Abruf-Feld mittig über den Mods */
-.abruf { display: flex; justify-content: center; margin: 4px 0 18px; }
-.ally { display: flex; flex-direction: column; align-items: center; gap: 8px; width: min(440px, 100%);
-        padding: 16px 20px 14px; background: var(--karte); border: 1px solid var(--linie); border-top: 2px solid var(--moos); border-radius: 4px;
-        background-image: repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--moos) 6%, transparent) 14px 15px); }
-.ally > label:first-child { color: var(--moos); font-size: 11px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; }
-.ally-zeile { display: flex; gap: 8px; width: 100%; }
-.ally #ally { flex: 1; min-width: 0; font-size: 17px; font-weight: 600; text-align: center; letter-spacing: 1px; font-variant-numeric: tabular-nums; }
-.ally-zeile button { flex: none; }
-.merken { color: var(--leise); font-size: 13px; }
-.farbmodus { margin-left: auto; background: transparent; color: var(--kopf-text); border-color: var(--kopf-linie);
+.ally { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.ally > label:first-child { color: var(--kopf-leise); font-size: 11px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; }
+.ally #ally { width: 9.5em; font-variant-numeric: tabular-nums; background: transparent; color: var(--kopf-text); border-color: var(--kopf-linie); }
+.ally button.primaer { background: var(--signal); border-color: var(--signal); color: #26311c; }
+.merken { color: var(--kopf-leise); font-size: 13px; }
+.farbmodus { background: transparent; color: var(--kopf-text); border-color: var(--kopf-linie);
              font-size: 13px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .farbmodus:hover { border-color: var(--signal); }
 .farbmodus .symbol { color: var(--signal); font-size: 15px; line-height: 1; }

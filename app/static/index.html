@@ -23,25 +23,20 @@
     <radialGradient id="mod-glanz" cx=".35" cy=".25" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
   </defs>
 </svg>
-<header class="kopf">
+<header class="kopf"><div class="kopf-innen">
   <div class="marke">Mod-Snapshots</div>
+  <form id="ally-form" class="ally" autocomplete="off">
+    <label for="ally">Ally-Code</label>
+    <input id="ally" inputmode="numeric" placeholder="123-456-789" maxlength="11" required>
+    <button type="submit" class="primaer">Mods abrufen</button>
+    <label class="merken"><input type="checkbox" id="merken" checked> in diesem Browser merken</label>
+  </form>
   <button type="button" id="farbmodus" class="farbmodus" title="Farbmodus wechseln: Automatisch → Hell → Dunkel">
     <span class="symbol" aria-hidden="true">◐</span><span class="text">Automatisch</span>
   </button>
-</header>
+</div></header>
 
 <main>
-  <section class="abruf">
-    <form id="ally-form" class="ally" autocomplete="off">
-      <label for="ally">Ally-Code</label>
-      <div class="ally-zeile">
-        <input id="ally" inputmode="numeric" placeholder="123-456-789" maxlength="11" required>
-        <button type="submit" class="primaer">Mods abrufen</button>
-      </div>
-      <label class="merken"><input type="checkbox" id="merken" checked> in diesem Browser merken</label>
-    </form>
-  </section>
-
   <div id="meldung" class="meldung" hidden></div>
 
   <section id="start" class="platzhalter">
