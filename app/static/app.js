@@ -163,6 +163,29 @@ function zeit(iso) {
 function zahl(n) { return Number(n).toLocaleString("de-DE"); }
 function allyFormat(c) { return c.replace(/^(\d{3})(\d{3})(\d{3})$/, "$1-$2-$3"); }
 
+// ---------- Farbmodus: Automatisch (Systemeinstellung) → Hell → Dunkel ----------
+const FARBMODI = [
+  {wert: "auto", text: "Automatisch", symbol: "◐"},
+  {wert: "hell", text: "Hell", symbol: "☀"},
+  {wert: "dunkel", text: "Dunkel", symbol: "☾"},
+];
+function farbmodusSetzen(wert) {
+  const modus = FARBMODI.find((m) => m.wert === wert) || FARBMODI[0];
+  if (modus.wert === "auto") delete document.documentElement.dataset.farbmodus;
+  else document.documentElement.dataset.farbmodus = modus.wert;
+  speicherSchreiben("farbmodus", modus.wert === "auto" ? null : modus.wert);
+  const knopf = $("#farbmodus");
+  knopf.querySelector(".symbol").textContent = modus.symbol;
+  knopf.querySelector(".text").textContent = modus.text;
+  knopf.setAttribute("aria-label", `Farbmodus: ${modus.text} (klicken zum Wechseln)`);
+}
+farbmodusSetzen(speicherLesen("farbmodus") || "auto");
+$("#farbmodus").addEventListener("click", () => {
+  const jetzt = document.documentElement.dataset.farbmodus || "auto";
+  const i = FARBMODI.findIndex((m) => m.wert === jetzt);
+  farbmodusSetzen(FARBMODI[(i + 1) % FARBMODI.length].wert);
+});
+
 function meldung(text, art = "") {
   const m = $("#meldung");
   m.hidden = !text;

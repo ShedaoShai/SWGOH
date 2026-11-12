@@ -18,9 +18,12 @@
   --tempo: #b0521c;
   --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --titel: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  color-scheme: light;
 }
+/* Dunkel: automatisch nach Systemeinstellung, außer „hell“ ist gewählt – oder ausdrücklich „dunkel“ gewählt.
+   Die Werte stehen zweimal, weil CSS eine Medienabfrage nicht mit einem Attribut „oder“-verknüpfen kann. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-farbmodus="hell"]) {
     --bg: #111613; --karte: #19201c; --text: #e7e9e1; --leise: #9aa69a; --linie: #2d3832;
     --akzent: #d9ee6b; --akzent-text: #26311c; --moos: #9bb596; --signal: #d9ee6b;
     --kopf-bg: #0b0f0d; --kopf-text: #e7e9e1; --kopf-leise: #8a9087; --kopf-linie: #3a463f;
@@ -28,7 +31,18 @@
     --schlecht: #e58a74; --schlecht-bg: #3a221c;
     --stufe-e: #a3acb4; --stufe-d: #5cc78e; --stufe-c: #6aa6ec; --stufe-b: #b78be6; --stufe-a: #e8c04a;
     --tempo: #f0995a;
+    color-scheme: dark;
   }
+}
+:root[data-farbmodus="dunkel"] {
+  --bg: #111613; --karte: #19201c; --text: #e7e9e1; --leise: #9aa69a; --linie: #2d3832;
+  --akzent: #d9ee6b; --akzent-text: #26311c; --moos: #9bb596; --signal: #d9ee6b;
+  --kopf-bg: #0b0f0d; --kopf-text: #e7e9e1; --kopf-leise: #8a9087; --kopf-linie: #3a463f;
+  --gut: #a9c99a; --gut-bg: #223024; --warn: #e2c26a; --warn-bg: #352d17;
+  --schlecht: #e58a74; --schlecht-bg: #3a221c;
+  --stufe-e: #a3acb4; --stufe-d: #5cc78e; --stufe-c: #6aa6ec; --stufe-b: #b78be6; --stufe-a: #e8c04a;
+  --tempo: #f0995a;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 var(--sans); }
@@ -49,6 +63,10 @@ input, textarea { border: 1px solid var(--linie); background: var(--karte); bord
 .ally #ally { width: 9.5em; font-variant-numeric: tabular-nums; background: transparent; color: var(--kopf-text); border-color: var(--kopf-linie); }
 .ally button.primaer { background: var(--signal); border-color: var(--signal); color: #26311c; }
 .merken { color: var(--kopf-leise); font-size: 13px; }
+.farbmodus { margin-left: auto; background: transparent; color: var(--kopf-text); border-color: var(--kopf-linie);
+             font-size: 13px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.farbmodus:hover { border-color: var(--signal); }
+.farbmodus .symbol { color: var(--signal); font-size: 15px; line-height: 1; }
 
 main { max-width: 1280px; margin: 0 auto; padding: 16px; }
 .fuss { max-width: 1280px; margin: 0 auto; padding: 8px 16px 32px; color: var(--leise); font-size: 12px; }

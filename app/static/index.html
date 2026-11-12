@@ -6,6 +6,8 @@
   <title>Mod-Snapshots</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='2' width='12' height='12' rx='2' transform='rotate(45 8 8)' fill='%23536851' stroke='%23d9ee6b'/></svg>">
   <link rel="stylesheet" href="/static/style.css">
+  <!-- Farbmodus vor dem ersten Zeichnen setzen, damit die Seite nicht kurz hell aufblitzt -->
+  <script>try { const m = localStorage.getItem("farbmodus"); if (m === "hell" || m === "dunkel") document.documentElement.dataset.farbmodus = m; } catch {}</script>
 </head>
 <body>
 <!-- Farbverläufe für die Mod-Bilder (von allen Mod-SVGs per url(#…) genutzt) -->
@@ -29,6 +31,9 @@
     <button type="submit" class="primaer">Mods abrufen</button>
     <label class="merken"><input type="checkbox" id="merken" checked> in diesem Browser merken</label>
   </form>
+  <button type="button" id="farbmodus" class="farbmodus" title="Farbmodus wechseln: Automatisch → Hell → Dunkel">
+    <span class="symbol" aria-hidden="true">◐</span><span class="text">Automatisch</span>
+  </button>
 </header>
 
 <main>
