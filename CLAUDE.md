@@ -8,7 +8,8 @@
 ## Ziel und Grenzen
 Mods eines SWGoH-Accounts von außerhalb des Spiels ansehen, als Snapshots speichern und eine Umbau-Liste zum Wiederherstellen erzeugen.
 - **Nur lesen.** Kein automatisches Ausrüsten, keine Nutzung der privaten Spiel-API mit Login-Token, keine Bot-Steuerung: Das verstößt gegen die Nutzungsbedingungen von EA/CG und gefährdet den Account. Der Nutzer hat HotUtils (kostenpflichtig, CG-Partner) bewusst abgelehnt.
-- **Ally-Codes** (eigene und fremde) dürfen nie im Quellcode, in Konfiguration, Tests, Beispieldaten, Doku oder sonst irgendwo im Repo landen. Eingabe nur in der Oberfläche. Laufzeitdaten mit Ally-Codes (Datenbank, Exporte) sind per `.gitignore` ausgeschlossen; vor jedem Commit auf 9-stellige Ziffernfolgen prüfen. Tests nutzen offensichtliche Platzhalter (z. B. `123456789`).
+- **Ally-Codes** (eigene und fremde) dürfen nie im Quellcode, in Konfiguration, Tests, Beispieldaten, Doku oder sonst irgendwo im Repo landen. Eingabe nur in der Oberfläche. Laufzeitdaten mit Ally-Codes (Datenbank, Exporte) sind per `.gitignore` ausgeschlossen; vor jedem Commit auf 9-stellige Ziffernfolgen prüfen. Tests nutzen offensichtliche Platzhalter (z. B. `123456789`). Der Hook `tools/git-hooks/pre-commit` sperrt 9-stellige Zahlen (Ausnahmen in `erlaubte-zahlen.txt`); nach neuem Klonen einmal `git config core.hooksPath tools/git-hooks` ausführen.
+- Repo: privat, https://github.com/ShedaoShai/SWGOH (Branch `main`).
 
 ## Technik
 - Python 3.13 (Container), FastAPI + uvicorn, SQLite, Oberfläche ohne Framework (`app/static`).
