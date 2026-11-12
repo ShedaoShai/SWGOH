@@ -1,0 +1,11 @@
+# Nur für die Entwicklung am PC: Comlink lokal auf http://localhost:3200
+#   docker compose -f deploy/lokal/docker-compose.yml up -d
+services:
+  swgoh-comlink:
+    image: ghcr.io/swgoh-utils/swgoh-comlink:latest
+    container_name: swgoh-comlink-lokal
+    environment:
+      APP_NAME: swgoh-mod-snapshots
+    ports:
+      - 3200:3000
+    restart: "no"

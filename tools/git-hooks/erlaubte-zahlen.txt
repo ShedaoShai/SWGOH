@@ -1,0 +1,3 @@
+# 9-stellige Zahlen, die keine Ally-Codes sind (eine pro Zeile)
+123456789
+500000000

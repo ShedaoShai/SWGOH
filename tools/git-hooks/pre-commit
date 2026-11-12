@@ -1,0 +1,13 @@
+#!/bin/bash
+# Verhindert, dass Ally-Codes ins Repo gelangen.
+# Ausnahmen (Platzhalter, Spielwerte) stehen in tools/git-hooks/erlaubte-zahlen.txt.
+treffer=$(git diff --cached -U0 --no-color --diff-filter=ACMR -- . ':(exclude)*.png' ':(exclude)*.jpg' \
+  | grep '^+' | grep -v '^+++' \
+  | grep -oE '(^|[^0-9])[0-9]{3}[- ]?[0-9]{3}[- ]?[0-9]{3}([^0-9]|$)' \
+  | tr -cd '0-9\n' | grep -E '^[0-9]{9}$' | grep -vxFf <(grep -E '^[0-9]{9}$' tools/git-hooks/erlaubte-zahlen.txt) | sort -u)
+if [ -n "$treffer" ]; then
+  echo "Commit abgebrochen: moegliche Ally-Codes gefunden:" >&2
+  echo "$treffer" | sed 's/^/  /' >&2
+  echo "Bitte entfernen oder durch 123456789 ersetzen." >&2
+  exit 1
+fi

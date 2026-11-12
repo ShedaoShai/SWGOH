@@ -1,0 +1,54 @@
+# SWGoH Mod-Snapshots auf der NAS – als Stack in Portainer einfügen (Stacks → Add stack → Web editor, Name: swgoh).
+# Die Dateien unter /volume2/docker/swgoh/ kopiert deploy/nas/sync-to-nas.ps1 dorthin.
+#
+# Weboberfläche: http://192.168.178.34:8099 (nur Heimnetz/VPN, keine Portfreigabe im Router)
+# Comlink ist nur innerhalb des Stacks erreichbar (kein Port nach außen).
+# Nach einem Sync beendet sich der Dienst selbst (neue VERSION-Datei) und wird von Docker neu gestartet.
+# Log zusätzlich in /volume2/docker/swgoh/data/swgoh.log
+services:
+  swgoh-comlink:
+    image: ghcr.io/swgoh-utils/swgoh-comlink:latest
+    container_name: SWGoH-Comlink
+    hostname: swgoh-comlink
+    mem_limit: 512m
+    cpu_shares: 512
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      APP_NAME: swgoh-mod-snapshots
+    restart: unless-stopped
+
+  swgoh:
+    image: python:3.13-slim
+    container_name: SWGoH-Mods
+    hostname: swgoh
+    mem_limit: 512m
+    cpu_shares: 512
+    security_opt:
+      - no-new-privileges:true
+    user: 1026:100
+    working_dir: /app
+    # venv liegt auf der NAS: Pakete werden nur beim ersten Start oder bei neuen Anforderungen geladen
+    command: >
+      sh -c "set -e;
+             [ -x /venv/bin/python ] || python -m venv /venv;
+             /venv/bin/pip install -q --disable-pip-version-check -r requirements.txt;
+             exec /venv/bin/python -m app.cli dienst"
+    environment:
+      COMLINK_URL: http://swgoh-comlink:3000
+      SWGOH_DATENBANK: /data/swgoh.db
+      SWGOH_PORT: "8099"
+      HOME: /tmp
+      PIP_NO_CACHE_DIR: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+      TZ: Europe/Berlin
+    volumes:
+      - /volume2/docker/swgoh/app:/app:ro
+      - /volume2/docker/swgoh/data:/data:rw
+      - /volume2/docker/swgoh/venv:/venv:rw
+    ports:
+      - 8099:8099
+    depends_on:
+      - swgoh-comlink
+    restart: unless-stopped

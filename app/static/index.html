@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mod-Snapshots</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='2' width='12' height='12' rx='2' transform='rotate(45 8 8)' fill='%231d5ea8'/></svg>">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<!-- Farbverläufe für die Mod-Bilder (von allen Mod-SVGs per url(#…) genutzt) -->
+<svg id="mod-defs" width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="mod-rand-1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3e7ea"/><stop offset=".5" stop-color="#9aa2a9"/><stop offset="1" stop-color="#4d555c"/></linearGradient>
+    <linearGradient id="mod-rand-2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9f5a6"/><stop offset=".5" stop-color="#4cc24a"/><stop offset="1" stop-color="#1d6a22"/></linearGradient>
+    <linearGradient id="mod-rand-3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5e3ff"/><stop offset=".5" stop-color="#2f97e8"/><stop offset="1" stop-color="#114e8c"/></linearGradient>
+    <linearGradient id="mod-rand-4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ead0ff"/><stop offset=".5" stop-color="#a95ee8"/><stop offset="1" stop-color="#55208f"/></linearGradient>
+    <linearGradient id="mod-rand-5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2b8"/><stop offset=".5" stop-color="#f2be2e"/><stop offset="1" stop-color="#9a6a06"/></linearGradient>
+    <linearGradient id="mod-silber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset=".45" stop-color="#b4bcc4"/><stop offset=".55" stop-color="#d9dee3"/><stop offset="1" stop-color="#6c757d"/></linearGradient>
+    <linearGradient id="mod-koerper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a525b"/><stop offset=".55" stop-color="#262b31"/><stop offset="1" stop-color="#121519"/></linearGradient>
+    <radialGradient id="mod-glanz" cx=".35" cy=".25" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+<header class="kopf">
+  <div class="marke">Mod-Snapshots</div>
+  <form id="ally-form" class="ally" autocomplete="off">
+    <label for="ally">Ally-Code</label>
+    <input id="ally" inputmode="numeric" placeholder="123-456-789" maxlength="11" required>
+    <button type="submit" class="primaer">Mods abrufen</button>
+    <label class="merken"><input type="checkbox" id="merken" checked> in diesem Browser merken</label>
+  </form>
+</header>
+
+<main>
+  <div id="meldung" class="meldung" hidden></div>
+
+  <section id="start" class="platzhalter">
+    Gib deinen Ally-Code ein und klicke auf <b>Mods abrufen</b>. Der Code wird nirgends fest gespeichert,
+    höchstens (wenn angehakt) hier im Browser.
+  </section>
+
+  <div id="inhalt" hidden>
+    <div class="spieler">
+      <h1 id="spieler-name"></h1>
+      <span id="spieler-info" class="klein"></span>
+    </div>
+    <nav class="reiter" role="tablist">
+      <button role="tab" data-reiter="mods" aria-selected="true">Aktuelle Mods</button>
+      <button role="tab" data-reiter="snapshots" aria-selected="false">Snapshots <span id="anzahl-snapshots" class="anzahl"></span></button>
+      <button role="tab" data-reiter="vergleich" aria-selected="false" hidden id="reiter-vergleich">Umbau</button>
+      <button role="tab" data-reiter="ansicht" aria-selected="false" hidden id="reiter-ansicht">Snapshot</button>
+    </nav>
+
+    <section id="mods" class="bereich">
+      <div class="werkzeuge">
+        <input type="search" id="suche" placeholder="Charakter suchen …">
+        <select id="fraktion" aria-label="Fraktion"><option value="">Alle Fraktionen</option></select>
+        <label><input type="checkbox" id="nur-auswahl"> nur ausgewählte</label>
+        <span id="treffer-info" class="klein"></span>
+        <button id="gefilterte-waehlen" class="leise">Angezeigte auswählen</button>
+        <span id="auswahl-info" class="klein"></span>
+        <button id="auswahl-leeren" class="leise">Auswahl leeren</button>
+        <button id="snapshot-neu" class="primaer">Snapshot erstellen</button>
+      </div>
+      <div id="mod-liste" class="karten"></div>
+    </section>
+
+    <section id="snapshots" class="bereich" hidden>
+      <div id="snapshot-liste"></div>
+    </section>
+
+    <section id="vergleich" class="bereich" hidden></section>
+    <section id="ansicht" class="bereich" hidden></section>
+  </div>
+</main>
+
+<dialog id="dlg-snapshot">
+  <form method="dialog" id="form-snapshot">
+    <h2 id="dlg-titel">Snapshot erstellen</h2>
+    <label>Name<input id="snap-name" required maxlength="100" placeholder="z. B. GAC Verteidigung"></label>
+    <label>Notiz<textarea id="snap-notiz" rows="3" maxlength="1000" placeholder="optional"></textarea></label>
+    <fieldset id="snap-umfang">
+      <legend>Umfang</legend>
+      <label><input type="radio" name="umfang" value="alle" checked> <span id="umfang-alle">alle Charaktere</span></label>
+      <label><input type="radio" name="umfang" value="auswahl"> <span id="umfang-auswahl">nur ausgewählte</span></label>
+    </fieldset>
+    <p class="klein" id="snap-hinweis">Vor dem Speichern werden die Mods neu abgerufen, damit der Snapshot aktuell ist.</p>
+    <div class="knoepfe">
+      <button value="abbrechen" formnovalidate class="leise">Abbrechen</button>
+      <button value="ok" class="primaer">Speichern</button>
+    </div>
+  </form>
+</dialog>
+
+<footer class="fuss"><span id="version"></span></footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
